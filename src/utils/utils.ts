@@ -10,6 +10,9 @@ export class Utils {
       getUserDetails: 'Ocurred an error on trying to get the user data',
       updateUser: 'Ocurred an error on trying to update the user',
       deleteUser: 'Ocurred an error on trying to delete the user',
+      getAllProducts: 'Ocurred an error on trying to get all products',
+      getFilteredProducts:
+        'Ocurred an error on trying to get filtered products',
     };
 
     return (

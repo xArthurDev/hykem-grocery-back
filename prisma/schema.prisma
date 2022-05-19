@@ -24,3 +24,21 @@ model users {
   password String
   username String
 }
+
+model Category {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  slug     String
+  products products[]
+}
+
+model products {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  minPrice   Int
+  maxPrice   Int
+  weight     String
+  imageUrl   String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @db.ObjectId
+}
