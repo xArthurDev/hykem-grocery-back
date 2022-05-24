@@ -25,20 +25,20 @@ model users {
   username String
 }
 
-model Category {
+model categories {
   id       String     @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   slug     String
-  products products[]
+  products products?
 }
 
 model products {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   minPrice   Int
   maxPrice   Int
   weight     String
   imageUrl   String
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String   @db.ObjectId
+  category   categories @relation(fields: [categoryId], references: [id], onUpdate: Cascade)
+  categoryId String     @db.ObjectId
 }
