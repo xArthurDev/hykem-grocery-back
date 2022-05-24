@@ -1,7 +1,17 @@
 export class Utils {
   errorHandlerMessage(codeError: string, errorSourceRoute: string): string {
+    const includesMessages = {
+      user: 'user',
+      product: 'product',
+      category: 'category',
+    };
+
+    const foundedReference = Object.keys(includesMessages).find((key) =>
+      errorSourceRoute.toLowerCase().includes(includesMessages[key]),
+    );
+
     const codeErrorMatrix = {
-      P2025: 'Sorry, we dont found any user with that id',
+      P2025: `Sorry, we dont found any ${foundedReference} with that id`,
     };
 
     const errorSourceRouteMatrix = {
@@ -13,6 +23,15 @@ export class Utils {
       getAllProducts: 'Ocurred an error on trying to get all products',
       getFilteredProducts:
         'Ocurred an error on trying to get filtered products',
+      createProduct: 'Ocurred an error on trying to create the product',
+      updateProduct: 'Ocurred an error on trying to update the product',
+      deleteProduct: 'Ocurred an error on trying to delete the product',
+      getProductDetails: 'Ocurred an error on trying to get the product data',
+      getAllCategories: 'Ocurred an error on trying to get all categories',
+      getCategoryById: 'Ocurred an error on trying to get category by id',
+      createCategory: 'Ocurred an error on trying to create the category',
+      updateCategory: 'Ocurred an error on trying to update the category',
+      deleteCategory: 'Ocurred an error on trying to delete the category',
     };
 
     return (
