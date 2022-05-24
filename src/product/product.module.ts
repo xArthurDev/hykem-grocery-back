@@ -1,10 +1,11 @@
+import { CategoryModule } from './../category/category.module';
 import { ProductService } from './product.service';
 import { ProductsController } from './product.controller';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TokenModule } from 'src/token/token.module';
 
 @Module({
-  imports: [TokenModule],
+  imports: [TokenModule, forwardRef(() => CategoryModule)],
   controllers: [ProductsController],
   providers: [ProductService],
   exports: [ProductService],
