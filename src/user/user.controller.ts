@@ -81,12 +81,6 @@ export class UsersController {
   ): Promise<IUserResponse> {
     try {
       const foundedUser = await this.userService.getUserDetails(id);
-      if (!foundedUser) {
-        return response.status(HttpStatus.BAD_REQUEST).json({
-          status: 'error',
-          message: 'Sorry, we dont found any user with that id',
-        });
-      }
       return response.status(HttpStatus.OK).json({
         status: 'success',
         user: foundedUser,
