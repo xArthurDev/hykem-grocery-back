@@ -32,10 +32,7 @@ export class AppController {
         authData.email,
       );
       if (foundedToken) {
-        return response.status(HttpStatus.UNAUTHORIZED).json({
-          status: 'error',
-          message: 'This user is already logged in',
-        });
+        await this.tokenService.deleteToken(foundedToken.token);
       }
       const accessToken = await this.authService.login(authData);
       this.tokenService.saveToken(accessToken, authData.email);
