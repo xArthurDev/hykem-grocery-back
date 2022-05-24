@@ -1,3 +1,4 @@
+import { CategoryModule } from './category/category.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,7 +8,13 @@ import { TokenModule } from './token/token.module';
 import { UsersModule } from './user/user.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, TokenModule, ProductModule],
+  imports: [
+    CategoryModule,
+    AuthModule,
+    UsersModule,
+    TokenModule,
+    ProductModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
