@@ -1,9 +1,10 @@
 export class Utils {
   errorHandlerMessage(codeError: string, errorSourceRoute: string): string {
     const includesMessages = {
-      user: 'user',
-      product: 'product',
-      category: 'category',
+      user: 'user with that id',
+      product: 'product with that id',
+      category: 'category with that id',
+      shoplist: 'shoplist with that user id',
     };
 
     const foundedReference = Object.keys(includesMessages).find((key) =>
@@ -11,7 +12,7 @@ export class Utils {
     );
 
     const codeErrorMatrix = {
-      P2025: `Sorry, we dont found any ${foundedReference} with that id`,
+      P2025: `Sorry, we dont found any ${foundedReference}`,
     };
 
     const errorSourceRouteMatrix = {
@@ -32,6 +33,13 @@ export class Utils {
       createCategory: 'Ocurred an error on trying to create the category',
       updateCategory: 'Ocurred an error on trying to update the category',
       deleteCategory: 'Ocurred an error on trying to delete the category',
+      getShoplistsByUserId:
+        'Ocurred an error on trying to get shoplists by user id',
+      createShoplist: 'Ocurred an error on trying to create the shoplist',
+      getShoplistDetailsById:
+        'Ocurred an error on trying to get the shoplist data',
+      updateShoplist: 'Ocurred an error on trying to update the shoplist',
+      deleteShoplist: 'Ocurred an error on trying to delete the shoplist',
     };
 
     return (
