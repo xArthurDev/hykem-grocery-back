@@ -26,11 +26,21 @@ export class CategoryService {
     });
   }
 
-  async createCategory(category: CategoryModel): Promise<CategoryModel> {
+  async createCategory(
+    category: CategoryModel,
+    userId: string,
+  ): Promise<CategoryModel> {
     const categorySlug = slugify(category.name, this.slugifyOptions);
     category = { ...category, slug: categorySlug };
+    delete category.userId;
     return await this.categoriesRepository.create({
-      data: { ...category },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore to avoid type warning
+      data: {
+        ...category,
+        isDefault: false,
+        user: { connect: { id: userId } },
+      },
     });
   }
 

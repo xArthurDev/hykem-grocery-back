@@ -31,12 +31,13 @@ export class CategoryController {
     private productService: ProductService,
   ) {}
 
-  @Get()
-  async index(
+  @Get(':userId')
+  async getCategoryByUserId(
+    @Param('userId') userId: string,
     @Res() response: ICategoriesResponse,
   ): Promise<ICategoriesResponse> {
     try {
-      const categories = await this.categoryService.getAllCategories();
+      const categories = await this.categoryService.getAllCategories(userId);
       return response.status(HttpStatus.OK).json({
         status: 'success',
         categories,
@@ -67,12 +68,14 @@ export class CategoryController {
     try {
       const createdCategory = await this.categoryService.createCategory(
         categoryData,
+        categoryData.userId,
       );
       return response.status(HttpStatus.OK).json({
         status: 'success',
         category: createdCategory,
       });
     } catch (error) {
+      console.log(error);
       return response.status(HttpStatus.BAD_REQUEST).json({
         status: 'error',
         message: Utils.errorHandlerMessage(error.code, 'createCategory'),
@@ -80,7 +83,7 @@ export class CategoryController {
     }
   }
 
-  @Get(':id')
+  @Get(':userId/:id')
   async getCategoryDetailsById(
     @Param('id') id: string,
     @Res() response: ICategoryResponse,
@@ -100,7 +103,7 @@ export class CategoryController {
     }
   }
 
-  @Put('update/:id')
+  @Put('update/:userId/:id')
   async updateCategory(
     @Param('id') id: string,
     @Body() categoryData: UpdateCategoryModel,
@@ -123,8 +126,8 @@ export class CategoryController {
     }
   }
 
-  @Delete('delete/:id')
-  async deleteUser(
+  @Delete('delete/:userId/:id')
+  async deleteCategory(
     @Param('id') id: string,
     @Res() response: ICategoryResponse,
   ): Promise<ICategoryResponse> {

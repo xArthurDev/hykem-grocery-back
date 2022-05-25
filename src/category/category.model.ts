@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { Response } from 'express';
+import { UserModel } from 'src/user/user.model';
 
 export class CategoryModel {
   id: string;
@@ -8,12 +9,21 @@ export class CategoryModel {
   name: string;
 
   slug: string;
+
+  user?: UserModel;
+
+  @IsNotEmpty()
+  isDefault: boolean;
+
+  @IsNotEmpty()
+  userId: string;
 }
 
 export class UpdateCategoryModel {
   id?: string;
   name?: string;
   slug?: string;
+  userId?: string;
 }
 
 interface CategoriesModelResponse {

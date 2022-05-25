@@ -25,6 +25,8 @@ model users {
   username   String
   createdAt  DateTime     @default(now()) @db.Date
   updatedAt  DateTime     @updatedAt @db.Date
+  shoplists  shoplists[]
+  categories categories[]
 }
 
 model categories {
@@ -35,6 +37,8 @@ model categories {
   createdAt DateTime  @default(now()) @db.Date
   updatedAt DateTime  @updatedAt @db.Date
   products  products?
+  user      users     @relation(fields: [userId], references: [id], onUpdate: Cascade)
+  userId    String
 }
 
 model products {
