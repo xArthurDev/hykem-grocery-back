@@ -8,11 +8,11 @@ export class Utils {
     };
 
     const foundedReference = Object.keys(includesMessages).find((key) =>
-      errorSourceRoute.toLowerCase().includes(includesMessages[key]),
+      errorSourceRoute.toLowerCase().includes(key),
     );
 
     const codeErrorMatrix = {
-      P2025: `Sorry, we dont found any ${foundedReference}`,
+      P2025: `Sorry, we dont found any ${includesMessages[foundedReference]}`,
     };
 
     const errorSourceRouteMatrix = {
