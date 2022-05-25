@@ -18,19 +18,23 @@ model tokens {
 }
 
 model users {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  email     String
-  name      String
-  password  String
-  username  String
-  shoplists shoplists[]
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  email      String
+  name       String
+  password   String
+  username   String
+  createdAt  DateTime     @default(now()) @db.Date
+  updatedAt  DateTime     @updatedAt @db.Date
 }
 
 model categories {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  slug     String
-  products products?
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  slug      String
+  isDefault Boolean
+  createdAt DateTime  @default(now()) @db.Date
+  updatedAt DateTime  @updatedAt @db.Date
+  products  products?
 }
 
 model products {
@@ -40,6 +44,8 @@ model products {
   maxPrice    Int
   weight      String
   imageUrl    String
+  createdAt   DateTime   @default(now()) @db.Date
+  updatedAt   DateTime   @updatedAt @db.Date
   category    categories @relation(fields: [categoryId], references: [id], onUpdate: Cascade)
   categoryId  String     @unique @db.ObjectId
   shoplists   shoplists? @relation(fields: [shoplistsId], references: [id])
@@ -50,6 +56,8 @@ model shoplists {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
+  createdAt   DateTime   @default(now()) @db.Date
+  updatedAt   DateTime   @updatedAt @db.Date
   user        users      @relation(fields: [userId], references: [id], onUpdate: Cascade)
   userId      String     @db.ObjectId
   products    products[]
