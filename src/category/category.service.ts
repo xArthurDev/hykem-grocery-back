@@ -16,12 +16,17 @@ export class CategoryService {
     trim: true,
   };
 
-  async getAllCategories(): Promise<CategoryModel[]> {
+  async getAllCategories(userId: string): Promise<CategoryModel[]> {
     return await this.categoriesRepository.findMany({
-      select: {
-        id: true,
-        name: true,
-        slug: true,
+      where: {
+        OR: [
+          {
+            isDefault: true,
+          },
+          {
+            userId,
+          },
+        ],
       },
     });
   }
