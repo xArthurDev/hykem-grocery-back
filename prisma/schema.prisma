@@ -27,6 +27,7 @@ model users {
   updatedAt  DateTime     @updatedAt @db.Date
   shoplists  shoplists[]
   categories categories[]
+  products   products[]
 }
 
 model categories {
@@ -52,6 +53,9 @@ model products {
   updatedAt   DateTime   @updatedAt @db.Date
   category    categories @relation(fields: [categoryId], references: [id], onUpdate: Cascade)
   categoryId  String     @unique @db.ObjectId
+  user        users      @relation(fields: [userId], references: [id], onUpdate: Cascade)
+  userId      String
+  isDefault   Boolean
   shoplists   shoplists? @relation(fields: [shoplistsId], references: [id])
   shoplistsId String?    @db.ObjectId
 }

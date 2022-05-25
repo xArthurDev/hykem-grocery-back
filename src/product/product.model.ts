@@ -1,6 +1,7 @@
 import { CategoryModel } from './../category/category.model';
 import { Response } from 'express';
 import { IsNotEmpty } from 'class-validator';
+import { UserModel } from 'src/user/user.model';
 
 export class ProductModel {
   id: string;
@@ -24,6 +25,14 @@ export class ProductModel {
 
   @IsNotEmpty()
   categoryId: string;
+
+  user?: UserModel;
+
+  @IsNotEmpty()
+  isDefault: boolean;
+
+  @IsNotEmpty()
+  userId: string;
 }
 
 export class GetProductModel {
@@ -38,6 +47,9 @@ export class UpdateProductModel {
   weight?: string;
   imageUrl?: string;
   categoryId?: string;
+  user?: UserModel;
+  isDefault?: boolean;
+  userId?: string;
 }
 
 interface ProductModelResponse {

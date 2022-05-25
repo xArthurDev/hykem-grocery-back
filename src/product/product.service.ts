@@ -6,8 +6,18 @@ import { ProductModel, UpdateProductModel } from './product.model';
 export class ProductService {
   productsRepository = prisma.products;
 
-  async getAllProducts(): Promise<ProductModel[]> {
+  async getAllProducts(userId: string): Promise<ProductModel[]> {
     return await this.productsRepository.findMany({
+      where: {
+        OR: [
+          {
+            isDefault: true,
+          },
+          {
+            userId,
+          },
+        ],
+      },
       include: {
         category: true,
       },
@@ -16,22 +26,22 @@ export class ProductService {
 
   async getProductsByCategorySlug(
     categorySlug: string,
+    userId: string,
   ): Promise<ProductModel[]> {
+    // TODO: Test this filter
     return await this.productsRepository.findMany({
       where: {
+        OR: [
+          {
+            isDefault: true,
+          },
+          {
+            userId,
+          },
+        ],
         category: {
           slug: categorySlug,
         },
-      },
-      select: {
-        id: true,
-        name: true,
-        minPrice: true,
-        maxPrice: true,
-        weight: true,
-        imageUrl: true,
-        category: true,
-        categoryId: true,
       },
     });
   }
@@ -47,13 +57,19 @@ export class ProductService {
   async createProduct(
     product: ProductModel,
     categoryId: string,
+    userId: string,
   ): Promise<ProductModel> {
+    delete product.userId;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore to avoid type warning
     return await this.productsRepository.create({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore to avoid type warning
-      data: { ...product, category: { connect: { id: categoryId } } },
+      data: {
+        ...product,
+        category: { connect: { id: categoryId } },
+        user: { connect: { id: userId } },
+      },
       include: {
         category: true,
       },
@@ -82,6 +98,8 @@ export class ProductService {
     delete updatedProductData.id;
     return await this.productsRepository.update({
       where: { id },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore to avoid type warning
       data: { ...updatedProductData },
       include: {
         category: true,

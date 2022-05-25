@@ -31,10 +31,13 @@ export class ProductsController {
     private categoryService: CategoryService,
   ) {}
 
-  @Get()
-  async index(@Res() response: IProductsResponse): Promise<IProductsResponse> {
+  @Get(':userId')
+  async index(
+    @Param('userId') userId: string,
+    @Res() response: IProductsResponse,
+  ): Promise<IProductsResponse> {
     try {
-      const products = await this.productService.getAllProducts();
+      const products = await this.productService.getAllProducts(userId);
       return response.status(HttpStatus.OK).json({
         status: 'success',
         products,
@@ -48,14 +51,16 @@ export class ProductsController {
     }
   }
 
-  @Get('slug/:categorySlug')
+  @Get(':userId/slug/:categorySlug')
   async getProductsByCategorySlug(
+    @Param('userId') userId: string,
     @Res() response: IProductsResponse,
     @Param('categorySlug') categorySlug: string,
   ): Promise<IProductsResponse> {
     try {
       const products = await this.productService.getProductsByCategorySlug(
         categorySlug,
+        userId,
       );
       return response.status(HttpStatus.OK).json({
         status: 'success',
@@ -89,6 +94,7 @@ export class ProductsController {
       const createdProduct = await this.productService.createProduct(
         productData,
         foundedCategory.id,
+        productData.userId,
       );
       return response.status(HttpStatus.OK).json({
         status: 'success',
@@ -103,7 +109,7 @@ export class ProductsController {
     }
   }
 
-  @Get(':id')
+  @Get(':userId/:id')
   async getProductDetailsById(
     @Param('id') id: string,
     @Res() response: IProductResponse,
@@ -123,7 +129,7 @@ export class ProductsController {
     }
   }
 
-  @Put('update/:id')
+  @Put('update/:userId/:id')
   async updateProduct(
     @Param('id') id: string,
     @Body() productData: UpdateProductModel,
@@ -147,7 +153,7 @@ export class ProductsController {
     }
   }
 
-  @Delete('delete/:id')
+  @Delete('delete/:userId/:id')
   async deleteProduct(
     @Param('id') id: string,
     @Res() response: IProductResponse,
