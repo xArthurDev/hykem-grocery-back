@@ -12,7 +12,16 @@ export class ShoplistService {
         userId,
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         products: true,
       },
     });
@@ -34,7 +43,16 @@ export class ShoplistService {
         },
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         products: true,
       },
     });
@@ -47,7 +65,16 @@ export class ShoplistService {
         userId,
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         products: true,
       },
     });
@@ -79,7 +106,16 @@ export class ShoplistService {
         },
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         products: true,
       },
     });
