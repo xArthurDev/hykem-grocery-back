@@ -2,7 +2,7 @@
 Hykem Grocery Back repository.
 
 ## Documentation
-[Hykem Grocery Back doc.](https://documenter.getpostman.com/view/18627247/Uz59QLKX)
+[Hykem Grocery Back - Documentation](https://documenter.getpostman.com/view/18627247/Uz59QLKX)
 
 ## Installation
 
