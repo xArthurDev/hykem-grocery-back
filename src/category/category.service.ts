@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { Injectable } from '@nestjs/common';
 import prisma from 'prisma/prisma-instance';
 import { CategoryModel, UpdateCategoryModel } from './category.model';
@@ -6,6 +7,8 @@ import slugify from 'slugify';
 @Injectable()
 export class CategoryService {
   categoriesRepository = prisma.categories;
+
+  constructor(private userService: UserService) {}
 
   slugifyOptions = {
     replacement: '-',
@@ -50,12 +53,13 @@ export class CategoryService {
     const categorySlug = slugify(category.name, this.slugifyOptions);
     category = { ...category, slug: categorySlug };
     delete category.userId;
+    const retrievedUserData = await this.userService.getUserDetails(userId);
     return await this.categoriesRepository.create({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore to avoid type warning
       data: {
         ...category,
-        isDefault: false,
+        isDefault: retrievedUserData.role === 'ADMIN' ? true : false,
         isDeleted: false,
         user: { connect: { id: userId } },
       },

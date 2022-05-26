@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import prisma from 'prisma/prisma-instance';
+import { UserService } from 'src/user/user.service';
 import { ProductModel, UpdateProductModel } from './product.model';
 
 @Injectable()
 export class ProductService {
   productsRepository = prisma.products;
+
+  constructor(private userService: UserService) {}
 
   async getAllProducts(userId: string): Promise<ProductModel[]> {
     return await this.productsRepository.findMany({
@@ -69,12 +72,13 @@ export class ProductService {
     delete product.userId;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore to avoid type warning
+    const retrievedUserData = await this.userService.getUserDetails(userId);
     return await this.productsRepository.create({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore to avoid type warning
       data: {
         ...product,
-        isDeleted: false,
+        isDefault: retrievedUserData.role === 'ADMIN' ? true : false,
         category: { connect: { id: categoryId } },
         user: { connect: { id: userId } },
       },

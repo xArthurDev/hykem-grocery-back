@@ -20,6 +20,7 @@ export class UserService {
         name: true,
         username: true,
         email: true,
+        role: true,
       },
     });
   }
@@ -30,12 +31,13 @@ export class UserService {
     return this.usersRepository.create({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore to avoid type warning
-      data: { ...user, isDeleted: false },
+      data: { ...user, isDeleted: false, role: 'USER' },
       select: {
         id: true,
         name: true,
         username: true,
         email: true,
+        role: true,
       },
     });
   }
@@ -54,6 +56,7 @@ export class UserService {
         name: true,
         username: true,
         email: true,
+        role: true,
       },
     });
   }
@@ -69,6 +72,7 @@ export class UserService {
         name: true,
         username: true,
         email: true,
+        role: true,
       },
     });
   }
@@ -87,6 +91,7 @@ export class UserService {
         name: true,
         username: true,
         email: true,
+        role: true,
       },
     });
   }
@@ -100,6 +105,7 @@ export class UserService {
         username: true,
         email: true,
         password: true,
+        role: true,
       },
     });
   }

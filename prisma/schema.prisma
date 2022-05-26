@@ -17,12 +17,19 @@ model tokens {
   @@unique([token])
 }
 
+enum Role {
+  ADMIN
+  USER
+  PREMIUM
+}
+
 model users {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
   email      String
   name       String
   password   String
   username   String
+  role       Role
   isDeleted  Boolean
   createdAt  DateTime     @default(now()) @db.Date
   updatedAt  DateTime     @updatedAt @db.Date

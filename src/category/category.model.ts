@@ -12,8 +12,7 @@ export class CategoryModel {
 
   user?: UserModel;
 
-  @IsNotEmpty()
-  isDefault: boolean;
+  isDefault?: boolean;
 
   @IsNotEmpty()
   userId: string;

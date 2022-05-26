@@ -1,6 +1,12 @@
 import { IsNotEmpty } from 'class-validator';
 import { Response } from 'express';
 
+export const Role = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+  PREMIUM: 'PREMIUM',
+};
+
 export class UserModel {
   id: string;
 
@@ -16,6 +22,8 @@ export class UserModel {
   email: string;
 
   isDeleted?: boolean;
+
+  role?: 'ADMIN' | 'USER' | 'PREMIUM';
 }
 
 export class UpdateUserModel {
@@ -30,6 +38,8 @@ export class UpdateUserModel {
   email?: string;
 
   isDeleted?: boolean;
+
+  role?: 'ADMIN' | 'USER' | 'PREMIUM';
 }
 
 interface UserModelResponse {

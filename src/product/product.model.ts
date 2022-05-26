@@ -28,8 +28,7 @@ export class ProductModel {
 
   user?: UserModel;
 
-  @IsNotEmpty()
-  isDefault: boolean;
+  isDefault?: boolean;
 
   @IsNotEmpty()
   userId: string;
