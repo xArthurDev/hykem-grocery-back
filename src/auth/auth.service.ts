@@ -22,6 +22,12 @@ export class AuthService {
 
     if (isPasswordMatch && user) {
       const { password, ...result } = user;
+      if (user.isDeleted) {
+        throw new HttpException(
+          'User account is deleted',
+          HttpStatus.FORBIDDEN,
+        );
+      }
       return result;
     } else {
       throw new HttpException(
