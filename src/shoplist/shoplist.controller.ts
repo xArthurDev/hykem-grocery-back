@@ -125,11 +125,12 @@ export class ShoplistController {
 
   @Delete('delete/:userId/:id')
   async deleteShoplist(
+    @Param('userId') userId: string,
     @Param('id') id: string,
     @Res() response: IShoplistResponse,
   ): Promise<IShoplistResponse> {
     try {
-      await this.shoplistService.deleteShoplist(id);
+      await this.shoplistService.deleteShoplist(userId, id);
       return response.status(HttpStatus.OK).json({
         status: 'success',
       });

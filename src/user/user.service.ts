@@ -12,6 +12,9 @@ export class UserService {
 
   async getAllUsers(): Promise<UserModel[]> {
     return this.usersRepository.findMany({
+      where: {
+        isDeleted: false,
+      },
       select: {
         id: true,
         name: true,
@@ -27,7 +30,7 @@ export class UserService {
     return this.usersRepository.create({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore to avoid type warning
-      data: { ...user },
+      data: { ...user, isDeleted: false },
       select: {
         id: true,
         name: true,
@@ -56,20 +59,29 @@ export class UserService {
   }
 
   async deleteUser(id: string): Promise<UserModel> {
-    return this.usersRepository.delete({
+    const retrievedUserData = await this.getUserDetails(id);
+    delete retrievedUserData.id;
+    return this.usersRepository.update({
       where: { id },
+      data: { ...retrievedUserData, isDeleted: true },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        email: true,
+      },
     });
   }
 
   async getUserDetailsByEmail(email: string): Promise<UserModel> {
     return this.usersRepository.findFirst({
-      where: { email },
+      where: { email, isDeleted: false },
     });
   }
 
   async getUserDetails(id: string): Promise<UserModel> {
     return this.usersRepository.findFirst({
-      where: { id },
+      where: { id, isDeleted: false },
       select: {
         id: true,
         name: true,
@@ -81,7 +93,7 @@ export class UserService {
 
   async getUserDetailsWithPassword(id: string): Promise<UpdateUserModel> {
     return this.usersRepository.findFirst({
-      where: { id },
+      where: { id, isDeleted: false },
       select: {
         id: false,
         name: true,

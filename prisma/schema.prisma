@@ -23,6 +23,7 @@ model users {
   name       String
   password   String
   username   String
+  isDeleted  Boolean
   createdAt  DateTime     @default(now()) @db.Date
   updatedAt  DateTime     @updatedAt @db.Date
   shoplists  shoplists[]
@@ -35,6 +36,7 @@ model categories {
   name      String
   slug      String
   isDefault Boolean
+  isDeleted Boolean
   createdAt DateTime  @default(now()) @db.Date
   updatedAt DateTime  @updatedAt @db.Date
   products  products?
@@ -56,6 +58,7 @@ model products {
   user        users      @relation(fields: [userId], references: [id], onUpdate: Cascade)
   userId      String
   isDefault   Boolean
+  isDeleted   Boolean
   shoplists   shoplists? @relation(fields: [shoplistsId], references: [id])
   shoplistsId String?    @db.ObjectId
 }
@@ -64,6 +67,7 @@ model shoplists {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
+  isDeleted   Boolean
   createdAt   DateTime   @default(now()) @db.Date
   updatedAt   DateTime   @updatedAt @db.Date
   user        users      @relation(fields: [userId], references: [id], onUpdate: Cascade)

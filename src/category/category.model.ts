@@ -17,6 +17,8 @@ export class CategoryModel {
 
   @IsNotEmpty()
   userId: string;
+
+  isDeleted?: boolean;
 }
 
 export class UpdateCategoryModel {
@@ -24,6 +26,7 @@ export class UpdateCategoryModel {
   name?: string;
   slug?: string;
   userId?: string;
+  isDefault?: boolean;
 }
 
 interface CategoriesModelResponse {

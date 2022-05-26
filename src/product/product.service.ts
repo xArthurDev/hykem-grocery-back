@@ -11,6 +11,9 @@ export class ProductService {
       where: {
         OR: [
           {
+            isDeleted: false,
+          },
+          {
             isDefault: true,
           },
           {
@@ -33,6 +36,9 @@ export class ProductService {
       where: {
         OR: [
           {
+            isDeleted: false,
+          },
+          {
             isDefault: true,
           },
           {
@@ -50,6 +56,7 @@ export class ProductService {
     return await this.productsRepository.findFirst({
       where: {
         categoryId,
+        isDeleted: false,
       },
     });
   }
@@ -67,6 +74,7 @@ export class ProductService {
       // @ts-ignore to avoid type warning
       data: {
         ...product,
+        isDeleted: false,
         category: { connect: { id: categoryId } },
         user: { connect: { id: userId } },
       },
@@ -78,7 +86,7 @@ export class ProductService {
 
   async getProductById(id: string): Promise<ProductModel> {
     return await this.productsRepository.findFirst({
-      where: { id },
+      where: { id, isDeleted: false },
       include: {
         category: true,
       },
@@ -108,8 +116,15 @@ export class ProductService {
   }
 
   async deleteProduct(id: string): Promise<ProductModel> {
-    return await this.productsRepository.delete({
+    const retrievedProductData = await this.getProductById(id);
+    delete retrievedProductData.category;
+    delete retrievedProductData.user;
+    delete retrievedProductData.id;
+    return await this.productsRepository.update({
       where: { id },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore to avoid type warning
+      data: { ...retrievedProductData, isDeleted: true },
     });
   }
 }

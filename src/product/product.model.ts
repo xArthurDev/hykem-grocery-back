@@ -33,6 +33,8 @@ export class ProductModel {
 
   @IsNotEmpty()
   userId: string;
+
+  isDeleted?: boolean;
 }
 
 export class GetProductModel {
@@ -50,6 +52,7 @@ export class UpdateProductModel {
   user?: UserModel;
   isDefault?: boolean;
   userId?: string;
+  isDeleted?: boolean;
 }
 
 interface ProductModelResponse {

@@ -9,6 +9,7 @@ export class ShoplistService {
   async getShoplistsByUserId(userId: string): Promise<ShoplistModel[]> {
     return await this.shoplistsRepository.findMany({
       where: {
+        isDeleted: false,
         userId,
       },
       include: {
@@ -37,6 +38,7 @@ export class ShoplistService {
       // @ts-ignore to avoid type warning
       data: {
         ...shoplistData,
+        isDeleted: false,
         user: { connect: { id: userId } },
         products: {
           connect: shoplistData.products.map((product) => ({ id: product.id })),
@@ -63,6 +65,7 @@ export class ShoplistService {
       where: {
         id,
         userId,
+        isDeleted: false,
       },
       include: {
         user: {
@@ -121,10 +124,20 @@ export class ShoplistService {
     });
   }
 
-  async deleteShoplist(id: string): Promise<ShoplistModel> {
-    return await this.shoplistsRepository.delete({
+  async deleteShoplist(userId: string, id: string): Promise<ShoplistModel> {
+    const retrievedShoplistData = await this.getShoplistById(userId, id);
+    delete retrievedShoplistData.user;
+    delete retrievedShoplistData.products;
+    delete retrievedShoplistData.id;
+    return await this.shoplistsRepository.update({
       where: {
         id,
+      },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore to avoid type warning
+      data: {
+        ...retrievedShoplistData,
+        isDeleted: true,
       },
     });
   }

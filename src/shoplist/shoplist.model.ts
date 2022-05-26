@@ -17,6 +17,8 @@ export class ShoplistModel {
 
   @IsNotEmpty()
   userId: string;
+
+  isDeleted?: boolean;
 }
 
 export class UpdateShoplistModel {
@@ -25,6 +27,7 @@ export class UpdateShoplistModel {
   description?: string;
   products?: ProductModel[];
   userId?: string;
+  isDeleted?: boolean;
 }
 
 interface ShoplistModelResponse {

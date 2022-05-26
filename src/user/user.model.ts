@@ -14,6 +14,8 @@ export class UserModel {
 
   @IsNotEmpty()
   email: string;
+
+  isDeleted?: boolean;
 }
 
 export class UpdateUserModel {
@@ -26,6 +28,8 @@ export class UpdateUserModel {
   username?: string;
 
   email?: string;
+
+  isDeleted?: boolean;
 }
 
 interface UserModelResponse {

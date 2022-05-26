@@ -21,12 +21,24 @@ export class CategoryService {
       where: {
         OR: [
           {
+            isDeleted: false,
+          },
+          {
             isDefault: true,
           },
           {
             userId,
           },
         ],
+      },
+    });
+  }
+
+  async getAllDefaultCategories(): Promise<CategoryModel[]> {
+    return await this.categoriesRepository.findMany({
+      where: {
+        isDefault: true,
+        isDeleted: false,
       },
     });
   }
@@ -44,6 +56,7 @@ export class CategoryService {
       data: {
         ...category,
         isDefault: false,
+        isDeleted: false,
         user: { connect: { id: userId } },
       },
     });
@@ -53,6 +66,7 @@ export class CategoryService {
     return await this.categoriesRepository.findFirst({
       where: {
         id,
+        isDeleted: false,
       },
     });
   }
@@ -62,6 +76,7 @@ export class CategoryService {
     return await this.categoriesRepository.findFirst({
       where: {
         slug: parsedSlug,
+        isDeleted: false,
       },
     });
   }
@@ -79,8 +94,16 @@ export class CategoryService {
   }
 
   async deleteCategory(id: string): Promise<CategoryModel> {
-    return await this.categoriesRepository.delete({
+    const retrievedCategoryData = await this.getCategoryById(id);
+    delete retrievedCategoryData.id;
+    return await this.categoriesRepository.update({
       where: { id },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore to avoid type warning
+      data: {
+        ...retrievedCategoryData,
+        isDeleted: true,
+      },
     });
   }
 }
